@@ -3,6 +3,28 @@
 #+description: Run npm scripts from any package.json in your project
 #+keywords: emacs, npm, scripts, monorepo
 
+* Description
+This package is minimal and only centers around running 
+scripts in node projects (shines in monorepos). You can use ~npm run~,
+but also ~yarn~, ~pnpm run~ or anything else.
+
+There are more complete solutions (see [[#related-packages][Related packages]]) that
+provide full interfaces to the npm cli.
+
+* Preview
+
+[[file:preview.gif]]
+
+* Usage
+
+=M-x npm-run= - Run an npm script from any package.json in your project.
+
+The command will:
+1. Find all package.json files in your project
+2. If there's more than one, prompt you to select which package (useful for monorepos)
+3. Prompt you to select which script to run
+4. Execute the script in a compilation buffer
+
 * Installation
 
 Manually add to your Emacs config:
@@ -19,20 +41,6 @@ Or with [[https://github.com/radian-software/straight.el][straight.el]]:
   :straight (npm-run :type git :host github :repo "juboba/npm-run"))
 #+end_src
 
-* Preview
-
-[[file:preview.gif]]
-
-* Usage
-
-=M-x npm-run= - Run an npm script from any package.json in your project.
-
-The command will:
-1. Find all package.json files in your project
-2. If there's more than one, prompt you to select which package (useful for monorepos)
-3. Prompt you to select which script to run
-4. Execute the script in a compilation buffer
-
 * Configuration
 
 ** =npm-run-find-command=
@@ -46,7 +54,7 @@ Command to find package.json files (default: =fd=). Uses =find= if =fd= is not a
 Command to run npm scripts. Can be =npm run=, =yarn=, =pnpm run=, etc.
 
 #+begin_src elisp
-(setq npm-run-run-command "yarn")  ; Use yarn instead of npm
+(setq npm-run-run-command "yarn")  ; Use yarn instead of 'npm run'
 #+end_src
 
 ** =npm-run-show-ansi-colors=
@@ -58,7 +66,7 @@ Whether to show ANSI colors in the output buffer (default: =t=).
 
 * Requirements
 
-- Emacs 28.1+
+- Emacs 28.1+ (project.el)
 - =fd= or =find= command-line tool for finding package.json files
 
 * Keybindings
@@ -68,6 +76,17 @@ You can bind =npm-run= to a key for quick access:
 #+begin_src elisp
 (define-key global-map (kbd "C-c n") 'npm-run)
 #+end_src
+
+* Related packages
+:PROPERTIES:
+:CUSTOM_ID: related-packages
+:END:
+
+Oher packages that provide a full interface to npm:
+- [[https://github.com/shaneikennedy/npm.el][GitHub -
+  shaneikennedy/npm.el: NPM client for emacs]] Uses transient
+- [[https://github.com/mojochao/npm-mode][GitHub - mojochao/npm-mode: An Emacs minor mode for working with NPM
+  projects.]]  Keybind driven 
 
 * License
 
