@@ -53,15 +53,27 @@ Can be \='npm run\=' (default) or \='yarn\=' or \='pnpm run\=', etc."
   :type 'boolean
   :group 'npm-run)
 
+(defun npm-run--find-command ()
+  "Return the command to use for finding files.
+Uses `npm-run-find-command' if available, otherwise falls back to find."
+  (if (executable-find npm-run-find-command)
+      npm-run-find-command
+    "find"))
+
 (defun npm-run--find-package-json-files (project-root)
   "Find all package.json files under PROJECT-ROOT."
-  (let ((default-directory project-root))
+  (let ((default-directory project-root)
+        (cmd (npm-run--find-command)))
     (when (string-empty-p project-root)
       (error "No project root found"))
     (let ((output (shell-command-to-string
-                   (format "%s -t f -E node_modules package.json %s"
-                           npm-run-find-command
-                           (shell-quote-argument (expand-file-name project-root))))))
+                   (if (string= cmd "fd")
+                       (format "%s -t f -E node_modules package.json %s"
+                               cmd
+                               (shell-quote-argument (expand-file-name project-root)))
+                     (format "%s %s -type f -name package.json ! -path '*/node_modules/*'"
+                             cmd
+                             (shell-quote-argument (expand-file-name project-root)))))))
       (when (string-empty-p output)
         (user-error "No package.json files found in project"))
       (mapcar #'string-trim
