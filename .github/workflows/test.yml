@@ -7,8 +7,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Install Emacs
-        run: sudo apt-get update && sudo apt-get install -y emacs
+      - uses: cachix/install-nix-action@v20
+        with:
+          nix_path: nixpkgs=channel:nixos-24.05
       - name: Run tests
-        run: |
-          emacs --batch -l npm-run.el -l npm-run-test.el -eval "(ert-run-tests-batch-and-exit)"
+        run: nix run nixpkgs#emacs -- --batch -l npm-run.el -l npm-run-test.el -eval "(ert-run-tests-batch-and-exit)"
