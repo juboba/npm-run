@@ -19,6 +19,9 @@ Or with [[https://github.com/radian-software/straight.el][straight.el]]:
   :straight (npm-run :type git :host github :repo "juboba/npm-run"))
 #+end_src
 
+* Preview
+
+[[file:preview.gif]]
 
 * Usage
 
