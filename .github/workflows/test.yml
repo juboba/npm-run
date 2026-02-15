@@ -1,0 +1,14 @@
+name: Tests
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Emacs
+        run: sudo apt-get update && sudo apt-get install -y emacs
+      - name: Run tests
+        run: |
+          emacs --batch -l npm-run.el -l npm-run-test.el -eval "(ert-run-tests-batch-and-exit)"
