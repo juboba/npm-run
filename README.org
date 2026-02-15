@@ -26,7 +26,7 @@ Or with [[https://github.com/radian-software/straight.el][straight.el]]:
 
 The command will:
 1. Find all package.json files in your project
-2. Prompt you to select which package (useful for monorepos)
+2. If there's more than one, prompt you to select which package (useful for monorepos)
 3. Prompt you to select which script to run
 4. Execute the script in a compilation buffer
 
