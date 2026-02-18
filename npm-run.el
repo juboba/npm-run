@@ -38,8 +38,9 @@
   :group 'convenience)
 
 (defcustom npm-run-find-command "fd"
-  "Command to find package.json files."
-  :type 'string
+  "Command to find package.json files.
+Can be \\='fd\\=' (default) or \\='find\\='."
+  :type '(choice (const "fd") (const "find"))
   :group 'npm-run)
 
 (defcustom npm-run-run-command "npm run"
