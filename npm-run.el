@@ -54,7 +54,7 @@ Can be \='npm run\=' (default) or \='yarn\=' or \='pnpm run\=', etc."
   :type 'boolean
   :group 'npm-run)
 
-(defcustom npm-run-ignore-paths '("node_modules" ".sst")
+(defcustom npm-run-ignore-paths '("node_modules")
   "Path patterns to ignore when searching for package.json files."
   :type '(list string)
   :group 'npm-run)
@@ -77,6 +77,14 @@ Uses `npm-run-find-command' if available, otherwise falls back to find."
 	    paths)
 	   " -o ")))
 
+(defun npm-run--build-fd-exclude (paths)
+  "For `fd', build a string which excludes PATHS from being searched."
+  (mapconcat
+   (lambda (path)
+     (format "-E '%s'" path))
+   paths
+   " "))
+
 (defun npm-run--find-package-json-files (project-root)
   "Find all package.json files under PROJECT-ROOT."
   (let ((default-directory project-root)
@@ -85,8 +93,9 @@ Uses `npm-run-find-command' if available, otherwise falls back to find."
       (error "No project root found"))
     (let ((output (shell-command-to-string
                    (if (string= cmd "fd")
-                       (format "%s -t f -E node_modules package.json %s"
+                       (format "%s -t f %s package.json %s"
                                cmd
+			       (npm-run--build-fd-exclude npm-run-ignore-paths)
                                (shell-quote-argument (expand-file-name project-root)))
                      (format "%s %s -type f -name package.json %s -print"
                              cmd
