@@ -64,6 +64,9 @@ Whether to show ANSI colors in the output buffer (default: =t=).
 (setq npm-run-show-ansi-colors nil)  ; Disable ANSI colors
 #+end_src
 
+** =npm-run-ignore-paths=
+Paths to ignore when searching for =package.json= files. Default: ="node_modules"=.
+
 * Requirements
 
 - Emacs 28.1+ (project.el)
